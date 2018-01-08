@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<!--
+ * index.html
+ *
+ * bitcoin-whitepaper-direct
+ * Copyright(c) 2018 Brian Taber
+ * Bitcoin Cash: 1J8zzGFQoWY3ZaSs5his99G53Vc8Rkx1v8
+ * MIT Licensed
+-->
+<html lang="en">
+  <head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Bitcoin: A Peer-to-Peer Electronic Cash System - Satoshi Nakamoto</title>
+  </head>
+  <body>
+	<div>
+		<div style="float:left;clear:none;">
+			Bitcoin: A Peer-to-Peer Electronic Cash System by Satoshi Nakamoto
+		</div>
+		<div style="float:right;top:0;clear:right;">
+			<a id="aboutLink" href="#">about<a>	 
+		</div>
+
+		<div style="float:left;clear:left;">
+			<object id="whitePaper" style="position: absolute; height: 100%; width: 100%;"></object>
+		</div>
+	</div>
+	<div id="aboutFrame" style="display:none; position: absolute; padding: 25px; top: 50px; left: 70%; width: 300px; height: 150px; background-color: white; border: 2px solid black;">
+		<center><b>bitcoin-whitepaper-direct - <a href="#">git</a></b><br><br>
+		Bitcoin Cash Donations always appreciated:<br><br>
+		1J8zzGFQoWY3ZaSs5his99G53Vc8Rkx1v8
+		<br><br>
+		<center><a id="aboutCloseLink" href="#">Close</a></center>
+	</div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script>
+		function hexToBase64(hexstring) {
+		    return btoa(hexstring.match(/\w{2}/g).map(function(a) {
+		        return String.fromCharCode(parseInt(a, 16));
+		    }).join(""));
+		}
+		function doAbout(link){
+			console.log($(link).css("left"));
+		}
+		$(function() {
+			$( "#aboutLink" ).click(function( event ) {
+				$('#aboutFrame').css('left', $(event.target).position().left - 325);
+				$('#aboutFrame').show();
+			});
+			$( "#aboutCloseLink" ).click(function( event ) {
+				$('#aboutFrame').hide();
+			});
+
+			var pdf = "";
+			$.get( "https://blockchain.info/rawtx/54e48e5f5c656b26c3bca14a8c95aa583d07ebe84dde3b7dd4a78f4e4186e713?cors=true", function( data ) {
+				data.out.forEach(function(output,num){
+					var len = output.script.length;
+					if (num >= data.out.length-2) return;
+
+					var tmp = "";
+					var cur = 4;
+
+					tmp += output.script.substr(cur,130);
+					cur += 132
+					tmp += output.script.substr(cur,130);
+					cur += 132
+					tmp += output.script.substr(cur,130);
+
+					var out = hexToBase64(tmp);
+					if (num === 0){
+						out = atob(out.substr(8)).substr(2);
+					}else if (num == data.out.length-3){
+						out = atob(out.substr(0,out.length-14))
+					}else{
+						out = atob(out);
+					}
+
+					pdf += out;
+				});
+
+				whitePaper.data = "data:application/pdf;base64," + btoa(pdf);
+			});
+		});
+	</script>
+  </body>
+</html>

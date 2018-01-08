@@ -1,0 +1,28 @@
+{
+  "name": "bitcoin-whitepaper-direct",
+  "version": "1.0.0",
+  "description": "Retrieve and display Bitcoin whitepaper directly from the blockchain",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daspawn/bitcoin-whitepaper-direct.git"
+  },
+  "keywords": [
+    "bitcoin",
+    "bitcoin cash",
+    "whitepaper",
+    "blockchain"
+  ],  
+  "author": "Brian Taber",
+  "license": "MIT",
+  "dependencies": {
+    "async": "^2.6.0",
+    "bitcore-lib": "^0.15.0",
+    "electrum-client": "0.0.5",
+    "electrum-host-parse": "0.0.2",
+    "util": "^0.10.3"
+  }
+}
